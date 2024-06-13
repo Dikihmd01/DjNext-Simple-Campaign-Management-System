@@ -6,31 +6,36 @@ import styles from "@/styles/Home.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ data, done, error }) {
-  // console.log(data)
   return (
     <>
-      <main>
-        <h1>Campaigns</h1>
-        {error}
-        {data.map((campaign) => (
-          <div key={campaign.slug}>
-            <div>
-              <Image
-                src={"https://res.cloudinary.com/dfnyqebmz/" + campaign.logo}
-                width={200}
-                height={200}
-                alt={campaign.title}
-              />
-            </div>
+      <Head>
+        <title>Campaign Management - Home</title>
+        <meta name="description" content="Campaign Management Site" />
+      </Head>
+      <main className={styles.main}>
+        <div className={styles.innerContent}>
+          <h1>Campaigns</h1>
+          {error}
+          {data.map((campaign) => (
+            <div key={campaign.slug} className={styles.item}>
+              <div>
+                <Image
+                  className={styles.img}
+                  src={"https://res.cloudinary.com/dfnyqebmz/" + campaign.logo}
+                  width={200}
+                  height={200}
+                  alt={campaign.title}
+                />
+              </div>
 
-            <div>
-              <h3>{campaign.title}</h3>
-              <p>{campaign.description}</p>
-              <p>Created at <i>{campaign.create_date}</i></p>
+              <div className={styles.itemRight}>
+                <h3>{campaign.title}</h3>
+                <p>{campaign.description}</p>
+                <p>Created at <i>{campaign.create_date}</i></p>
+              </div>
             </div>
-            <hr />
-          </div>
-        ))}
+          ))}
+        </div>
       </main>
     </>
   );
@@ -39,12 +44,13 @@ export default function Home({ data, done, error }) {
 export async function getStaticProps() {
   let campaigns = [];
   let error = null
+
   try {
-    const url = "http://127.0.0.1:8000/api/campaigns";
+    const url = `${process.env.BASE_API_URL}/campaigns`;
     const response = await fetch(url)
     campaigns = await response.json()
   } catch (e) {
-    error = e.message
+    error = e.message ? e.message : "Someting went wrong, please check again!";
   }
 
   return {
