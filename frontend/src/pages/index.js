@@ -2,8 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { formatDate } from '../utils/formatDate';
 
 export default function Home({ data, done, error }) {
   return (
@@ -31,7 +30,7 @@ export default function Home({ data, done, error }) {
               <div className={styles.itemRight}>
                 <h3>{campaign.title}</h3>
                 <p>{campaign.description}</p>
-                <p>Created at <i>{campaign.create_date}</i></p>
+                <p>{formatDate(campaign.create_date)}</p>
               </div>
             </div>
           ))}
